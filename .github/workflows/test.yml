@@ -1,0 +1,24 @@
+name: Build macOS App
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+      - name: Build app con PyInstaller
+        run: pyinstaller --onefile app.py
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: myapp-macos
+          path: dist/*
